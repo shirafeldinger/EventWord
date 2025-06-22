@@ -1,47 +1,49 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MyActionListener } from '../utils/MyActionListener';
-import { WORD_LENGTH, LISTENER_CHAR_CLICK, LISTENER_BACKSPACE, LISTENER_ENTER } from '../constants';
+import { ActionListenerEvent, WORD_LENGTH } from '../constants';
+import { isValidWord } from '../utils/isValidWord';
 
-export function useWordInput(actionListenerUI: MyActionListener) {
+export function useWordInput(actionListenerUI: MyActionListener<string>) {
   const [letters, setLetters] = useState<string[]>([]);
   const [status, setStatus] = useState<'success' | 'error' | null>(null);
+  const lettersRef = useRef(letters);
 
   useEffect(() => {
-    actionListenerUI.registerListener(LISTENER_CHAR_CLICK, (char: string) => {
-      setStatus(null);
-      setLetters((prev) => {
-        if (prev.length < WORD_LENGTH) {
-          return [...prev, char];
-        }
-        return prev;
-      });
-    });
+    lettersRef.current = letters;
+  }, [letters]);
 
-    actionListenerUI.registerListener(LISTENER_BACKSPACE, () => {
+  useEffect(() => {
+    const handleCharClick = (char: string) => {
+      setStatus(null);
+      setLetters((prev) => (prev.length < WORD_LENGTH ? [...prev, char] : prev));
+    };
+
+    const handleBackspace = () => {
       setStatus(null);
       setLetters((prev) => prev.slice(0, -1));
-    });
+    };
 
-    actionListenerUI.registerListener(LISTENER_ENTER, async () => {
-      if (letters.length !== WORD_LENGTH) {
+    const handleEnter = async () => {
+      const word = lettersRef.current.join('');
+
+      if (word.length !== WORD_LENGTH) {
         setStatus('error');
         return;
       }
-      const word = letters.join('');
-      try {
-        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-        setStatus(res.ok ? 'success' : 'error');
-      } catch {
-        setStatus('error');
-      }
-    });
+      const isValid = await isValidWord(word);
+      setStatus(isValid ? 'success' : 'error');
+    };
+
+    actionListenerUI.registerListener(ActionListenerEvent.CHAR_CLICK, handleCharClick);
+    actionListenerUI.registerListener(ActionListenerEvent.BACKSPACE, handleBackspace);
+    actionListenerUI.registerListener(ActionListenerEvent.ENTER, handleEnter);
 
     return () => {
-      actionListenerUI.removeListener(LISTENER_CHAR_CLICK);
-      actionListenerUI.removeListener(LISTENER_BACKSPACE);
-      actionListenerUI.removeListener(LISTENER_ENTER);
+      actionListenerUI.removeListener(ActionListenerEvent.CHAR_CLICK);
+      actionListenerUI.removeListener(ActionListenerEvent.BACKSPACE);
+      actionListenerUI.removeListener(ActionListenerEvent.ENTER);
     };
-  }, [letters, actionListenerUI]);
+  }, [actionListenerUI]);
 
   return { letters, setLetters, status, setStatus };
 }
