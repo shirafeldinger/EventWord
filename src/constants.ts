@@ -6,16 +6,26 @@ export const KEYBOARD_ROWS = [
   ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK'],
 ];
 
-// Action listener event names
+export const statusColors = {
+  success: 'green',
+  error: 'red',
+  default: '#ccc',
+};
+
 export enum ActionListenerEvent {
   CHAR_CLICK = 'CHAR_CLICK',
   BACKSPACE = 'BACKSPACE',
   ENTER = 'ENTER',
 }
 
-// Special key identifiers
+export enum Status {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  NONE = 'none',
+}
+
+export const DELETE_BUTTON = '⌫';
 export const KEY_ENTER = 'ENTER';
 export const KEY_BACK = 'BACK';
 
-// External API endpoint
 export const DICTIONARY_API_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en/';

@@ -1,7 +1,7 @@
 import { MyActionListener } from './utils/MyActionListener';
 import { KEY_ENTER, KEY_BACK, ActionListenerEvent } from './constants';
-import { InputContainer } from './components/InputContainer';
-import { Keyboard } from './components/Keyboard';
+import { InputContainer } from './components/InputContainer/InputContainer';
+import { Keyboard } from './components/Keyboard/Keyboard';
 import styles from './App.module.css';
 
 const actionListenerUI = new MyActionListener<string>();

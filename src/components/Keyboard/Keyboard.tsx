@@ -1,6 +1,5 @@
-import { KEYBOARD_ROWS, KEY_ENTER, KEY_BACK } from '../constants';
-import styles from '../App.module.css';
-
+import { KEYBOARD_ROWS, KEY_ENTER, KEY_BACK, DELETE_BUTTON } from '../../constants';
+import styles from '../Keyboard/Keyboard.module.css';
 interface KeyboardProps {
   onKeyClick: (key: string) => void;
 }
@@ -18,7 +17,7 @@ export function Keyboard({ onKeyClick }: KeyboardProps) {
                 key === KEY_ENTER || key === KEY_BACK ? styles.wide : ''
               }`}
             >
-              {key === KEY_BACK ? '⌫' : key}
+              {key === KEY_BACK ? DELETE_BUTTON : key}
             </button>
           ))}
         </div>

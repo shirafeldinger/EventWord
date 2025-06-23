@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { MyActionListener } from '../utils/MyActionListener';
-import { ActionListenerEvent, WORD_LENGTH } from '../constants';
+import { ActionListenerEvent, Status, WORD_LENGTH } from '../constants';
 import { isValidWord } from '../utils/isValidWord';
 
 export function useWordInput(actionListenerUI: MyActionListener<string>) {
   const [letters, setLetters] = useState<string[]>([]);
-  const [status, setStatus] = useState<'success' | 'error' | null>(null);
+  const [status, setStatus] = useState<Status>(Status.NONE);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
   const lettersRef = useRef(letters);
 
   useEffect(() => {
@@ -14,12 +16,14 @@ export function useWordInput(actionListenerUI: MyActionListener<string>) {
 
   useEffect(() => {
     const handleCharClick = (char: string) => {
-      setStatus(null);
+      setStatus(Status.NONE);
+      setStatusMessage(null);
       setLetters((prev) => (prev.length < WORD_LENGTH ? [...prev, char] : prev));
     };
 
     const handleBackspace = () => {
-      setStatus(null);
+      setStatus(Status.NONE);
+      setStatusMessage(null);
       setLetters((prev) => prev.slice(0, -1));
     };
 
@@ -27,11 +31,13 @@ export function useWordInput(actionListenerUI: MyActionListener<string>) {
       const word = lettersRef.current.join('');
 
       if (word.length !== WORD_LENGTH) {
-        setStatus('error');
+        setStatus(Status.ERROR);
+        setStatusMessage('Please fill all letters before submitting');
         return;
       }
-      const isValid = await isValidWord(word);
-      setStatus(isValid ? 'success' : 'error');
+
+      const isValid = await isValidWord(word, setStatusMessage);
+      setStatus(isValid ? Status.SUCCESS : Status.ERROR);
     };
 
     actionListenerUI.registerListener(ActionListenerEvent.CHAR_CLICK, handleCharClick);
@@ -45,5 +51,5 @@ export function useWordInput(actionListenerUI: MyActionListener<string>) {
     };
   }, [actionListenerUI]);
 
-  return { letters, setLetters, status, setStatus };
+  return { letters, status, statusMessage };
 }
