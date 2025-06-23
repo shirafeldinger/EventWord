@@ -31,8 +31,6 @@ export function useWordInput(actionListenerUI: MyActionListener<string>) {
       const word = lettersRef.current.join('');
 
       if (word.length !== WORD_LENGTH) {
-        setStatus(Status.ERROR);
-        setStatusMessage('Please fill all letters before submitting');
         return;
       }
 
