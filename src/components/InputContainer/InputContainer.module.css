@@ -27,7 +27,7 @@
   }
 }
 
-.message {
+.loading {
   animation: borderPulse 1.5s infinite ease-in-out;
   box-shadow: 0 0 4px rgba(255, 183, 77, 0.5);
   border-radius: 8px;

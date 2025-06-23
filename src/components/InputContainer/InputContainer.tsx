@@ -1,7 +1,8 @@
-import { statusColors, WORD_LENGTH } from '../../constants';
+import { WORD_LENGTH } from '../../constants';
 import { useWordInput } from '../../hooks/useWordInput';
 import type { MyActionListener } from '../../utils/MyActionListener';
-import styles from '../InputContainer/InputContainer.module.css';
+import styles from './InputContainer.module.css';
+import { LetterBox } from './LetterBox';
 
 interface InputContainerProps {
   actionListenerUI: MyActionListener<string>;
@@ -9,23 +10,15 @@ interface InputContainerProps {
 
 export function InputContainer({ actionListenerUI }: InputContainerProps) {
   const { letters, status, statusMessage } = useWordInput(actionListenerUI);
-
-  const borderColor = statusColors[status as keyof typeof statusColors] || statusColors.default;
+  const isLoading = statusMessage === 'Checking word...';
 
   return (
     <div className={styles.inputContainer}>
       {statusMessage && <div className={styles.statusMessage}>{statusMessage}</div>}
+
       <div className={styles.wordRow}>
         {[...Array(WORD_LENGTH)].map((_, i) => (
-          <div
-            key={i}
-            className={`${styles.wordInputBox} ${statusMessage ? styles.message : ''}`}
-            style={{
-              border: `2px solid ${borderColor}`,
-            }}
-          >
-            {letters[i]}
-          </div>
+          <LetterBox key={i} letter={letters[i] || ''} status={status} isLoading={isLoading} />
         ))}
       </div>
     </div>
