@@ -3,16 +3,16 @@ import { DICTIONARY_API_URL } from '../constants';
 
 export async function isValidWord(
   word: string,
-  statusMessage: Dispatch<SetStateAction<string | null>>,
+  setStatusMessage: Dispatch<SetStateAction<string | null>>,
 ): Promise<boolean> {
   try {
-    statusMessage('is checking word');
+    setStatusMessage('Checking word...');
     const response = await fetch(`${DICTIONARY_API_URL}${word}`);
     return response.ok;
   } catch (error) {
     console.error('Word validation failed:', error);
     return false;
   } finally {
-    statusMessage(null);
+    setStatusMessage(null);
   }
 }
