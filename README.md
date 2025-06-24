@@ -1,54 +1,54 @@
-# React + TypeScript + Vite
+# Event Word App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small keyboard built with **React**, **TypeScript**, and **Vite**.
 
-Currently, two official plugins are available:
+This app allows users to enter a 5-letter word using a virtual keyboard. It checks whether the word is valid by calling a dictionary API and gives visual feedback on success or error.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- 🔠 On-screen keyboard input
+- ✅ Word validation using [dictionaryapi.dev](https://dictionaryapi.dev/)
+- 🎨 Dynamic border animations based on word status
+- 💡 Clean component structure with custom hooks
+- 📦 State managed using a lightweight event listener pattern (instead of Redux or Context)
+- ✨ Styled with CSS Modules
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
+
+- React + TypeScript
+- Vite
+- CSS Modules
+
+## Run Locally
+
+```bash
+git clone https://github.com/YOUR_USERNAME/EventWord.git
+cd EventWord
+npm install
+npm run dev
+```
+
+## ESLint Configuration
+
+If you're building a production app, enable type-aware lint rules:
 
 ```js
 export default tseslint.config({
   extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
     ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
+    // Optional stricter rules:
+    // ...tseslint.configs.strictTypeChecked,
     ...tseslint.configs.stylisticTypeChecked,
   ],
   languageOptions: {
-    // other options...
     parserOptions: {
       project: ['./tsconfig.node.json', './tsconfig.app.json'],
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## License
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+MIT
