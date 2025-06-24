@@ -29,3 +29,5 @@ export const KEY_ENTER = 'ENTER';
 export const KEY_BACK = 'BACK';
 
 export const DICTIONARY_API_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
+export const STATUS_MESSAGE_CHECKING = 'Checking word...';
+export const STATUS_MESSAGE_ERROR = 'Word validation failed';
